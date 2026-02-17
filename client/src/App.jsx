@@ -14,6 +14,14 @@ import CommissionList from './pages/agent/CommissionList';
 
 import WithdrawalList from './pages/agent/WithdrawalList';
 
+import AffiliateDashboard from './pages/affiliate/AffiliateDashboard';
+
+import ReferralLinks from './pages/affiliate/ReferralLinks';
+
+import MarketingAssets from './pages/affiliate/MarketingAssets';
+
+import EarningsList from './pages/affiliate/EarningsList';
+
 // Placeholder components for routes we haven't built yet
 const Placeholder = ({ title }) => (
     <div className="p-6">
@@ -48,12 +56,12 @@ function App() {
                         {/* Affiliate Routes */}
                         <Route element={<ProtectedRoute allowedRoles={['affiliate']} />}>
                             <Route path="/affiliate" element={<DashboardLayout />}>
-                                <Route path="dashboard" element={<Placeholder title="Affiliate Dashboard" />} />
-                                <Route path="referral-links" element={<Placeholder title="Referral Links" />} />
+                                <Route path="dashboard" element={<AffiliateDashboard />} />
+                                <Route path="referral-links" element={<ReferralLinks />} />
                                 <Route path="clicks" element={<Placeholder title="Click History" />} />
                                 <Route path="funnel" element={<Placeholder title="Funnel Stats" />} />
-                                <Route path="earnings" element={<Placeholder title="Earnings" />} />
-                                <Route path="assets" element={<Placeholder title="Marketing Assets" />} />
+                                <Route path="earnings" element={<EarningsList />} />
+                                <Route path="assets" element={<MarketingAssets />} />
                                 <Route path="settings" element={<Placeholder title="Settings" />} />
                                 <Route index element={<Navigate to="dashboard" replace />} />
                             </Route>
