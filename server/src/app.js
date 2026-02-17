@@ -39,9 +39,11 @@ app.get('/api/health', (req, res) => {
 
 // --------------- API Routes ---------------
 const authRoutes = require('./routes/authRoutes');
+const agentRoutes = require('./routes/agentRoutes');
 
 app.use('/api/auth', authRoutes);
-// Agent and Affiliate routes will be mounted in subsequent phases
+app.use('/api/agent', agentRoutes);
+// Affiliate routes will be mounted in the next phase
 
 // --------------- 404 Handler ---------------
 app.use((req, res) => {
