@@ -40,10 +40,11 @@ app.get('/api/health', (req, res) => {
 // --------------- API Routes ---------------
 const authRoutes = require('./routes/authRoutes');
 const agentRoutes = require('./routes/agentRoutes');
+const affiliateRoutes = require('./routes/affiliateRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/agent', agentRoutes);
-// Affiliate routes will be mounted in the next phase
+app.use('/api/affiliate', affiliateRoutes);
 
 // --------------- 404 Handler ---------------
 app.use((req, res) => {
