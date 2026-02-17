@@ -6,6 +6,14 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 
+import AgentDashboard from './pages/agent/AgentDashboard';
+
+import UserList from './pages/agent/UserList';
+
+import CommissionList from './pages/agent/CommissionList';
+
+import WithdrawalList from './pages/agent/WithdrawalList';
+
 // Placeholder components for routes we haven't built yet
 const Placeholder = ({ title }) => (
     <div className="p-6">
@@ -28,10 +36,10 @@ function App() {
                         {/* Agent Routes */}
                         <Route element={<ProtectedRoute allowedRoles={['agent']} />}>
                             <Route path="/agent" element={<DashboardLayout />}>
-                                <Route path="dashboard" element={<Placeholder title="Agent Dashboard" />} />
-                                <Route path="users" element={<Placeholder title="User Management" />} />
-                                <Route path="commissions" element={<Placeholder title="Commissions" />} />
-                                <Route path="withdrawals" element={<Placeholder title="Withdrawals" />} />
+                                <Route path="dashboard" element={<AgentDashboard />} />
+                                <Route path="users" element={<UserList />} />
+                                <Route path="commissions" element={<CommissionList />} />
+                                <Route path="withdrawals" element={<WithdrawalList />} />
                                 <Route path="settings" element={<Placeholder title="Settings" />} />
                                 <Route index element={<Navigate to="dashboard" replace />} />
                             </Route>
