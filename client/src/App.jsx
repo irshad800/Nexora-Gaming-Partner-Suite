@@ -22,6 +22,8 @@ import MarketingAssets from './pages/affiliate/MarketingAssets';
 
 import EarningsList from './pages/affiliate/EarningsList';
 
+import Settings from './pages/Settings';
+
 // Placeholder components for routes we haven't built yet
 const Placeholder = ({ title }) => (
     <div className="p-6">
@@ -48,7 +50,7 @@ function App() {
                                 <Route path="users" element={<UserList />} />
                                 <Route path="commissions" element={<CommissionList />} />
                                 <Route path="withdrawals" element={<WithdrawalList />} />
-                                <Route path="settings" element={<Placeholder title="Settings" />} />
+                                <Route path="settings" element={<Settings />} />
                                 <Route index element={<Navigate to="dashboard" replace />} />
                             </Route>
                         </Route>
@@ -62,7 +64,7 @@ function App() {
                                 <Route path="funnel" element={<Placeholder title="Funnel Stats" />} />
                                 <Route path="earnings" element={<EarningsList />} />
                                 <Route path="assets" element={<MarketingAssets />} />
-                                <Route path="settings" element={<Placeholder title="Settings" />} />
+                                <Route path="settings" element={<Settings />} />
                                 <Route index element={<Navigate to="dashboard" replace />} />
                             </Route>
                         </Route>
