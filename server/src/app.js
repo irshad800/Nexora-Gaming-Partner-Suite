@@ -38,10 +38,10 @@ app.get('/api/health', (req, res) => {
 });
 
 // --------------- API Routes ---------------
-// Routes will be mounted here in subsequent phases
-// app.use('/api/auth', authRoutes);
-// app.use('/api/agent', agentRoutes);
-// app.use('/api/affiliate', affiliateRoutes);
+const authRoutes = require('./routes/authRoutes');
+
+app.use('/api/auth', authRoutes);
+// Agent and Affiliate routes will be mounted in subsequent phases
 
 // --------------- 404 Handler ---------------
 app.use((req, res) => {
