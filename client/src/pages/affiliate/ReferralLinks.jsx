@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiCopy, FiPlus, FiLink, FiActivity, FiUsers } from 'react-icons/fi';
+import { FiCopy, FiPlus, FiLink, FiActivity, FiUsers, FiPercent } from 'react-icons/fi';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 
@@ -14,7 +14,8 @@ const ReferralLinks = () => {
     const fetchLinks = async () => {
         try {
             const { data } = await api.get('/affiliate/referral-links');
-            setLinks(data.data);
+            // API returns a single link object, wrap it in an array to maintain list view structure
+            setLinks(data.data ? [data.data] : []);
         } catch (error) {
             console.error('Failed to fetch referral links', error);
         } finally {
@@ -160,7 +161,7 @@ const ReferralLinks = () => {
                                             <FiPercent className="w-3 h-3" /> Conv. Rate
                                         </div>
                                         <p className="text-xl font-bold text-gray-900 dark:text-white">
-                                            {link.clicks > 0 ? ((link.registrations / link.clicks) * 100).toFixed(1) : 0}%
+                                            {(link.clicks || 0) > 0 ? (((link.registrations || 0) / link.clicks) * 100).toFixed(1) : 0}%
                                         </p>
                                     </div>
                                 </div>

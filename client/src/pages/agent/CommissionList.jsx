@@ -20,9 +20,9 @@ const CommissionList = () => {
         setLoading(true);
         try {
             const { data } = await api.get('/agent/commissions', { params });
-            setCommissions(data.data.commissions);
-            setTotalPages(data.data.pagination.pages);
-            setTotalCommission(data.data.totalCommission);
+            setCommissions(data.data?.commissions || []);
+            setTotalPages(data.data?.pagination?.pages || 1);
+            setTotalCommission(data.data?.totalCommission || 0);
         } catch (error) {
             console.error('Failed to fetch commissions', error);
         } finally {
@@ -159,7 +159,7 @@ const CommissionList = () => {
                                             ${comm.amount.toFixed(2)}
                                         </td>
                                         <td className="px-6 py-4 text-sm font-bold text-green-600 dark:text-green-400">
-                                            +${comm.commissionAmount.toFixed(2)}
+                                            +${(comm.amount || 0).toFixed(2)}
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">

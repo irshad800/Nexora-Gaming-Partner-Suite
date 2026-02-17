@@ -20,8 +20,8 @@ const WithdrawalList = () => {
         try {
             // Fetch withdrawals
             const { data } = await api.get('/agent/withdrawals', { params });
-            setWithdrawals(data.data.withdrawals);
-            setTotalPages(data.data.pagination.pages);
+            setWithdrawals(data.data?.withdrawals || []);
+            setTotalPages(data.data?.pagination?.pages || 1);
 
             // Fetch current balance for the modal
             const dashboardData = await api.get('/agent/dashboard');

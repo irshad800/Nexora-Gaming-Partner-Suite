@@ -20,8 +20,8 @@ const UserList = () => {
         setLoading(true);
         try {
             const { data } = await api.get('/agent/users', { params });
-            setUsers(data.data.users);
-            setTotalPages(data.data.pagination.pages);
+            setUsers(data.data?.players || []);
+            setTotalPages(data.data?.pagination?.pages || 1);
         } catch (error) {
             console.error('Failed to fetch users', error);
         } finally {
@@ -137,10 +137,10 @@ const UserList = () => {
                                         <td className="px-6 py-4">
                                             <span
                                                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${user.status === 'active'
-                                                        ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                                                        : user.status === 'blocked'
-                                                            ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
-                                                            : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                                                    ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                                                    : user.status === 'blocked'
+                                                        ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+                                                        : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                                                     }`}
                                             >
                                                 {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
@@ -163,8 +163,8 @@ const UserList = () => {
                                                 <button
                                                     onClick={() => toggleUserStatus(user._id, user.status)}
                                                     className={`p-1.5 rounded-lg transition-colors ${user.status === 'active'
-                                                            ? 'text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20'
-                                                            : 'text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20'
+                                                        ? 'text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20'
+                                                        : 'text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20'
                                                         }`}
                                                     title={user.status === 'active' ? 'Block User' : 'Unblock User'}
                                                 >

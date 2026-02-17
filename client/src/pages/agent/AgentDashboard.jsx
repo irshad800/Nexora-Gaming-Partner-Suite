@@ -50,7 +50,7 @@ const AgentDashboard = () => {
                 />
                 <StatsCard
                     title="Total Revenue"
-                    value={`$${stats?.totalEarnings || 0}`}
+                    value={`$${stats?.totalRevenue || 0}`}
                     icon={FiDollarSign}
                     color="green"
                 />
@@ -75,7 +75,7 @@ const AgentDashboard = () => {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Revenue Overview</h3>
                     <div className="h-80">
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={stats?.earningsChart || []}>
+                            <AreaChart data={stats?.graphData || []}>
                                 <defs>
                                     <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.3} />
@@ -84,7 +84,7 @@ const AgentDashboard = () => {
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                                 <XAxis
-                                    dataKey="_id"
+                                    dataKey="date"
                                     axisLine={false}
                                     tickLine={false}
                                     tick={{ fill: '#6b7280', fontSize: 12 }}
@@ -102,7 +102,7 @@ const AgentDashboard = () => {
                                 />
                                 <Area
                                     type="monotone"
-                                    dataKey="amount"
+                                    dataKey="earnings"
                                     stroke="#4f46e5"
                                     strokeWidth={3}
                                     fillOpacity={1}

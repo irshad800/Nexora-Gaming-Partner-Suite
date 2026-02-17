@@ -15,7 +15,7 @@ const EarningsList = () => {
         try {
             // Fetch payouts history
             const { data } = await api.get('/affiliate/payouts');
-            setPayouts(data.data);
+            setPayouts(data.data?.payouts || []);
 
             // Fetch dashboard data for balance and earnings stats
             const dashboardData = await api.get('/affiliate/dashboard');
@@ -146,7 +146,7 @@ const EarningsList = () => {
                                             {item.paymentDetails}
                                         </td>
                                         <td className="px-6 py-4 text-sm font-bold text-gray-900 dark:text-white">
-                                            ${item.amount.toFixed(2)}
+                                            ${(item.amount || 0).toFixed(2)}
                                         </td>
                                         <td className="px-6 py-4">
                                             {getStatusBadge(item.status)}
