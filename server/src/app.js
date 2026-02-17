@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -36,6 +38,12 @@ app.get('/api/health', (req, res) => {
         timestamp: new Date().toISOString(),
     });
 });
+
+// --------------- API Documentation ---------------
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'Nexora Gaming API Docs',
+}));
 
 // --------------- API Routes ---------------
 const authRoutes = require('./routes/authRoutes');
