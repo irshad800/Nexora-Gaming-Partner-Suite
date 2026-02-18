@@ -17,6 +17,7 @@ router.get('/dashboard', authorize('agent'), AgentController.getDashboard);
 // User Management
 // ============================================
 router.get('/users', authorize('agent'), AgentController.getUsers);
+router.get('/users/export', authorize('agent'), AgentController.exportUsers);
 
 router.post(
     '/users',

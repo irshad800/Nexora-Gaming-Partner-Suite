@@ -7,15 +7,28 @@ const ReferralLinks = () => {
     const [links, setLinks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showCreateForm, setShowCreateForm] = useState(false);
-    const [newLinkData, setNewLinkData] = useState({ campaign: '', source: '' });
+    const [newLinkData, setNewLinkData] = useState({ campaign: '', source: '', code: '' });
     const [generating, setGenerating] = useState(false);
 
     // Fetch existing links
     const fetchLinks = async () => {
         try {
             const { data } = await api.get('/affiliate/referral-links');
-            // API returns a single link object, wrap it in an array to maintain list view structure
-            setLinks(data.data ? [data.data] : []);
+            // Backend returns { success: true, data: { referralCode: '...', totalClicks: 0, ... } }
+            if (data.data && data.data.referralCode) {
+                setLinks([{
+                    _id: 'primary',
+                    code: data.data.referralCode,
+                    clicks: data.data.totalClicks || 0,
+                    registrations: data.data.totalRegistrations || 0,
+                    createdAt: data.data.createdAt || new Date().toISOString(),
+                    campaign: 'Primary Referral Link'
+                }]);
+            } else if (Array.isArray(data.data)) {
+                setLinks(data.data);
+            } else {
+                setLinks([]);
+            }
         } catch (error) {
             console.error('Failed to fetch referral links', error);
         } finally {
@@ -32,10 +45,12 @@ const ReferralLinks = () => {
         e.preventDefault();
         setGenerating(true);
         try {
-            await api.post('/affiliate/referral-links', newLinkData);
+            await api.post('/affiliate/referral-links', {
+                slug: newLinkData.code || newLinkData.campaign
+            });
             toast.success('Referral link generated');
             setShowCreateForm(false);
-            setNewLinkData({ campaign: '', source: '' });
+            setNewLinkData({ campaign: '', source: '', code: '' });
             fetchLinks();
         } catch (error) {
             // Error handled by interceptor
@@ -72,22 +87,12 @@ const ReferralLinks = () => {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Generate Custom Link</h3>
                     <form onSubmit={handleGenerate} className="flex flex-col sm:flex-row gap-4 items-end">
                         <div className="flex-1 w-full">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Campaign Name (Optional)</label>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Custom Link Slug (Optional)</label>
                             <input
                                 type="text"
-                                placeholder="e.g. Summer Sale, Facebook Ad"
-                                value={newLinkData.campaign}
-                                onChange={(e) => setNewLinkData({ ...newLinkData, campaign: e.target.value })}
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-dark-bg dark:text-white"
-                            />
-                        </div>
-                        <div className="flex-1 w-full">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Source (Optional)</label>
-                            <input
-                                type="text"
-                                placeholder="e.g. social_media, email, blog"
-                                value={newLinkData.source}
-                                onChange={(e) => setNewLinkData({ ...newLinkData, source: e.target.value })}
+                                placeholder="e.g. summer-promo"
+                                value={newLinkData.code}
+                                onChange={(e) => setNewLinkData({ ...newLinkData, code: e.target.value })}
                                 className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-dark-bg dark:text-white"
                             />
                         </div>

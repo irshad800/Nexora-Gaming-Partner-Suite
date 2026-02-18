@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { FiSearch, FiPlus, FiMoreVertical, FiUserCheck, FiUserX, FiEye } from 'react-icons/fi';
+import { FiSearch, FiPlus, FiMoreVertical, FiUserCheck, FiUserX, FiEye, FiDownload } from 'react-icons/fi';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
+import { format } from 'date-fns';
 import AddUserModal from './AddUserModal'; // We'll create this next
 
 const UserList = () => {
@@ -15,6 +15,26 @@ const UserList = () => {
     });
     const [totalPages, setTotalPages] = useState(1);
     const [showAddModal, setShowAddModal] = useState(false);
+
+    const handleExport = async () => {
+        try {
+            const response = await api.get('/agent/users/export', {
+                params: { search: params.search, status: params.status },
+                responseType: 'blob',
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `players-${format(new Date(), 'yyyy-MM-dd')}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            toast.success('Player list exported successfully');
+        } catch (error) {
+            toast.error('Failed to export player data');
+        }
+    };
 
     const fetchUsers = async () => {
         setLoading(true);
@@ -59,13 +79,22 @@ const UserList = () => {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">User Management</h1>
-                <button
-                    onClick={() => setShowAddModal(true)}
-                    className="flex items-center justify-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors"
-                >
-                    <FiPlus className="w-4 h-4" />
-                    Add New User
-                </button>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={handleExport}
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-dark-bg transition-colors"
+                    >
+                        <FiDownload className="w-4 h-4" />
+                        Export CSV
+                    </button>
+                    <button
+                        onClick={() => setShowAddModal(true)}
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors"
+                    >
+                        <FiPlus className="w-4 h-4" />
+                        Add New User
+                    </button>
+                </div>
             </div>
 
             {/* Filters */}

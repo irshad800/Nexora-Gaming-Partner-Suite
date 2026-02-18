@@ -119,6 +119,40 @@ class AgentService {
     }
 
     /**
+     * Export players as CSV data
+     * @param {string} userId - Agent's user ID
+     * @param {Object} query - Search and status filters
+     * @returns {Array} Player records for CSV
+     */
+    static async exportUsers(userId, { search = '', status = '' }) {
+        const agent = await Agent.findOne({ userId });
+        if (!agent) throw { statusCode: 404, message: 'Agent profile not found' };
+
+        const filter = { agentId: agent._id };
+        if (search) {
+            filter.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } },
+            ];
+        }
+        if (status && ['active', 'blocked', 'inactive'].includes(status)) {
+            filter.status = status;
+        }
+
+        const players = await Player.find(filter).sort({ createdAt: -1 }).lean();
+
+        return players.map((p) => ({
+            Name: p.name,
+            Email: p.email,
+            Phone: p.phone || 'N/A',
+            Country: p.country || 'N/A',
+            Status: p.status,
+            'Joined Date': new Date(p.createdAt).toLocaleDateString(),
+            'Last Active': p.lastActive ? new Date(p.lastActive).toLocaleDateString() : 'N/A',
+        }));
+    }
+
+    /**
      * Add a new player under an agent
      * @param {string} userId - Agent's user ID
      * @param {Object} playerData - Player details

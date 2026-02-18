@@ -36,6 +36,36 @@ class AgentController {
     }
 
     /**
+     * GET /api/agent/users/export
+     * Export players as CSV
+     */
+    static async exportUsers(req, res, next) {
+        try {
+            const data = await AgentService.exportUsers(req.user.id, req.query);
+
+            if (data.length === 0) {
+                return errorResponse(res, 404, 'No player data to export');
+            }
+
+            // Generate CSV manually
+            const headers = Object.keys(data[0]);
+            const csvRows = [
+                headers.join(','),
+                ...data.map((row) =>
+                    headers.map((h) => `"${row[h]}"`).join(',')
+                ),
+            ];
+
+            res.setHeader('Content-Type', 'text/csv');
+            res.setHeader('Content-Disposition', 'attachment; filename=players.csv');
+            return res.send(csvRows.join('\n'));
+        } catch (error) {
+            if (error.statusCode) return errorResponse(res, error.statusCode, error.message);
+            next(error);
+        }
+    }
+
+    /**
      * POST /api/agent/users
      * Add a new player
      */
