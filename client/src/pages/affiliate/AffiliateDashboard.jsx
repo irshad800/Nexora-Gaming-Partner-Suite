@@ -3,23 +3,25 @@ import { FiMousePointer, FiUserPlus, FiDollarSign, FiPercent } from 'react-icons
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import api from '../../services/api';
 import StatsCard from '../../components/common/StatsCard';
+import PayoutRequestModal from './PayoutRequestModal';
 
 const AffiliateDashboard = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+
+    const fetchDashboard = async () => {
+        try {
+            const { data } = await api.get('/affiliate/dashboard');
+            setStats(data.data);
+        } catch (error) {
+            console.error('Failed to fetch dashboard stats', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchDashboard = async () => {
-            try {
-                const { data } = await api.get('/affiliate/dashboard');
-                setStats(data.data);
-            } catch (error) {
-                console.error('Failed to fetch dashboard stats', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchDashboard();
     }, []);
 
@@ -151,7 +153,10 @@ const AffiliateDashboard = () => {
                         </div>
 
                         <div className="mt-6">
-                            <button className="w-full py-2 bg-white text-indigo-700 font-medium rounded-lg hover:bg-indigo-50 transition-colors shadow-sm">
+                            <button
+                                onClick={() => setShowModal(true)}
+                                className="w-full py-2 bg-white text-indigo-700 font-medium rounded-lg hover:bg-indigo-50 transition-colors shadow-sm"
+                            >
                                 Request Payout
                             </button>
                         </div>
@@ -169,6 +174,13 @@ const AffiliateDashboard = () => {
                     </div>
                 </div>
             </div>
+
+            <PayoutRequestModal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                onSuccess={fetchDashboard}
+                balance={stats?.withdrawableBalance || 0}
+            />
         </div>
     );
 };

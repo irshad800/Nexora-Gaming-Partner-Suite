@@ -15,13 +15,11 @@ import CommissionList from './pages/agent/CommissionList';
 import WithdrawalList from './pages/agent/WithdrawalList';
 
 import AffiliateDashboard from './pages/affiliate/AffiliateDashboard';
-
 import ReferralLinks from './pages/affiliate/ReferralLinks';
-
+import ClickHistory from './pages/affiliate/ClickHistory';
+import FunnelStats from './pages/affiliate/FunnelStats';
 import MarketingAssets from './pages/affiliate/MarketingAssets';
-
 import EarningsList from './pages/affiliate/EarningsList';
-
 import Settings from './pages/Settings';
 
 // Placeholder components for routes we haven't built yet
@@ -60,8 +58,8 @@ function App() {
                             <Route path="/affiliate" element={<DashboardLayout />}>
                                 <Route path="dashboard" element={<AffiliateDashboard />} />
                                 <Route path="referral-links" element={<ReferralLinks />} />
-                                <Route path="clicks" element={<Placeholder title="Click History" />} />
-                                <Route path="funnel" element={<Placeholder title="Funnel Stats" />} />
+                                <Route path="clicks" element={<ClickHistory />} />
+                                <Route path="funnel" element={<FunnelStats />} />
                                 <Route path="earnings" element={<EarningsList />} />
                                 <Route path="assets" element={<MarketingAssets />} />
                                 <Route path="settings" element={<Settings />} />
