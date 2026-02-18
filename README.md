@@ -198,9 +198,9 @@ This project uses **MongoDB** with **Mongoose ODM**. Schemas are located in `/se
 ## 🧪 Credentials (Testing)
 | Role | Email | Password |
 |---|---|---|
-| **Agent** | agent1@example.com | password123 |
-| **Affiliate** | affiliate1@example.com | password123 |
-| **Admin** | admin@example.com | password123 |
+| **Agent** | agent1@example.com | agent123 |
+| **Affiliate** | affiliate1@example.com | affiliate123 |
+| **Admin** | admin@example.com | admin123 |
 
 ---
-*Built with ❤️ for Nexora Gaming.*
+*Built with for Nexora Gaming.*
