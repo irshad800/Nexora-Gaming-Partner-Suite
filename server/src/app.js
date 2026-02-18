@@ -39,6 +39,15 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+// Debug middleware to inspect request body
+app.use((req, res, next) => {
+    if (req.method === 'POST') {
+        console.log(`📡 Incoming POST to ${req.path}`);
+        console.log('📦 Body:', JSON.stringify(req.body, null, 2));
+    }
+    next();
+});
+
 // --------------- Request Logging ---------------
 if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'));
