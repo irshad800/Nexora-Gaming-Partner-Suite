@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 // Create axios instance with base URL
 const api = axios.create({
-    baseURL: '/api', // Vite proxy handles the rest
+    baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
     headers: {
         'Content-Type': 'application/json',
     },
