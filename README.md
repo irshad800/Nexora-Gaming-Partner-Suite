@@ -2,7 +2,6 @@
 
 A comprehensive MERN stack application for managing gaming agents and affiliates. Built with React 18, Node.js, Express, and MongoDB.
 
-![Nexora Gaming Partner Suite Dashboard](https://via.placeholder.com/800x400?text=Nexora+Gaming+Partner+Suite+Dashboard)
 
 ## 🚀 Deliverables
 
